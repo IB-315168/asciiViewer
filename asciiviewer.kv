@@ -4,12 +4,23 @@
     TextWidget:
 
 <TextWidget>:
-    BoxLayout:
+    RelativeLayout:
         size: root.size
-        Button:
-            id: button1
-            text: "Rand"
-            on_release: root.change_text()
+        BoxLayout
+            size_hint: None, 0.064
+            pos: root.x, root.height-self.height
+            Button:
+                id: button1
+                size_hint: None, None
+                size: root.width * 0.128, root.height * 0.064
+                text: "Rand"
+                on_release: root.change_text()
+            Button:
+                id: button2
+                size_hint: None, None
+                size: root.width * 0.128, root.height * 0.064
+                text: "Rand2"
         Label:
             id: label1
+            text_size: self.size
             text: root.random_number

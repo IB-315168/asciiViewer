@@ -1,14 +1,36 @@
-import random
+import pyautogui
+from PIL import ImageGrab
+
+from pynput import mouse
 from kivy.properties import StringProperty
 from kivy.uix.widget import Widget
+
+from logic import ScreenCap
+
+
+def selectArea():
+    return pyautogui.position()
 
 
 class TextWidget(Widget):
     random_number = StringProperty()
+    screen_scan = False
 
     def __init__(self, **kwargs):
         super(TextWidget, self).__init__(**kwargs)
-        self.random_number = str(random.randint(1, 100))
+        self.random_number = "0000000000000000000000000000000000000000000000000000" \
+                             + "0000000000000000000000000000000000000000000000000000000000000000000000 "
 
     def change_text(self):
-        self.random_number = str(random.randint(1, 100))
+        if not self.screen_scan:
+            ScreenCap.listener.start()
+            self.screen_scan = True
+        else:
+            ScreenCap.listener.stop()
+            self.screen_scan = False
+        while not ScreenCap.ScreenCap.complete:
+            self.random_number = "<{x1},{y1},{x2},{y2}>".format(x1=ScreenCap.ScreenCap.xPos1, y1=ScreenCap.ScreenCap.yPos1,
+                                                                x2=ScreenCap.ScreenCap.xPos2, y2=ScreenCap.ScreenCap.yPos2)
+
+    def screenShot(self):
+        ImageGrab.grab()
