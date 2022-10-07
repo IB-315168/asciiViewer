@@ -12,15 +12,19 @@
             Button:
                 id: button1
                 size_hint: None, None
-                size: root.width * 0.128, root.height * 0.064
-                text: "Rand"
+                size: root.width * 0.200, root.height * 0.064
+                text: "Set capture area"
                 on_release: root.change_text()
             Button:
                 id: button2
                 size_hint: None, None
                 size: root.width * 0.128, root.height * 0.064
-                text: "Rand2"
+                text: "Capture"
+                on_release: root.screenShot()
         Label:
             id: label1
+            spacing: 100
             text_size: self.size
+            font_size: 10
+            font_name: 'CONSOLA'
             text: root.random_number

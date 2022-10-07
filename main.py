@@ -4,6 +4,8 @@ from kivy.config import Config
 from kivy.uix.relativelayout import RelativeLayout
 
 Config.set('graphics', 'resizable', False)
+Config.set('graphics', 'width', '1030')
+Config.set('graphics', 'height', '900')
 
 
 class AsciiViewer(RelativeLayout):
