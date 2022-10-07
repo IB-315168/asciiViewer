@@ -1,18 +1,11 @@
 import threading
 
-import pyautogui
-import pyscreenshot as pyscreenshot
-
 from pynput import mouse
 from kivy.properties import StringProperty
 from kivy.uix.widget import Widget
 
 import legacy.asciiView as asciiView
 from logic import ScreenCap
-
-
-def selectArea():
-    return pyautogui.position()
 
 
 class TextWidget(Widget):
@@ -35,17 +28,10 @@ class TextWidget(Widget):
         listener.start()
         ScreenCap.ScreenCap.complete = False
 
-        # if not self.screen_scan:
-        #     ScreenCap.listener.start()
-        #     self.screen_scan = True
-        # else:
-        #     ScreenCap.listener.stop()
-        #     self.screen_scan = False
         while not ScreenCap.ScreenCap.complete:
             self.random_number = "<{x1},{y1},{x2},{y2}>".format(x1=ScreenCap.ScreenCap.xPos1, y1=ScreenCap.ScreenCap.yPos1,
                                                                 x2=ScreenCap.ScreenCap.xPos2, y2=ScreenCap.ScreenCap.yPos2)
         listener.stop()
-        # self.screenShot()
 
     def screenShot(self):
         self.a_v.add_listener(self.setLabel)
