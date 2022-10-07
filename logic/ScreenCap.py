@@ -2,6 +2,7 @@ from pynput import mouse
 
 
 class ScreenCap:
+    #TODO refactor as an array
     xPos1 = 0
     yPos1 = 0
     complete = False

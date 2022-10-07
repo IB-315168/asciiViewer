@@ -1,5 +1,5 @@
 import pyautogui
-from PIL import ImageGrab
+import pyscreenshot as pyscreenshot
 
 from pynput import mouse
 from kivy.properties import StringProperty
@@ -31,6 +31,9 @@ class TextWidget(Widget):
         while not ScreenCap.ScreenCap.complete:
             self.random_number = "<{x1},{y1},{x2},{y2}>".format(x1=ScreenCap.ScreenCap.xPos1, y1=ScreenCap.ScreenCap.yPos1,
                                                                 x2=ScreenCap.ScreenCap.xPos2, y2=ScreenCap.ScreenCap.yPos2)
+        self.screenShot()
 
     def screenShot(self):
-        ImageGrab.grab()
+        im = pyscreenshot.grab(bbox=(ScreenCap.ScreenCap.xPos1, ScreenCap.ScreenCap.yPos1,
+                                     ScreenCap.ScreenCap.xPos2, ScreenCap.ScreenCap.yPos2))
+        im.show()
