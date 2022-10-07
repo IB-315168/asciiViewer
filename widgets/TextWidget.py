@@ -17,10 +17,12 @@ def selectArea():
 
 class TextWidget(Widget):
     random_number = StringProperty()
+    a_v = asciiView.AsciiView()
     screen_scan = False
 
     def __init__(self, **kwargs):
         super(TextWidget, self).__init__(**kwargs)
+        self.__listeners = []
 
         self.random_number = "0000000000000000000000000000000000000000000000000000" \
                              + "0000000000000000000000000000000000000000000000000000000000000000000000 "
@@ -46,24 +48,17 @@ class TextWidget(Widget):
         # self.screenShot()
 
     def screenShot(self):
-        event = threading.Event()
-        x = threading.Thread(target=asciiView.screencap, args=(event, ScreenCap.ScreenCap.xPos1,
-                                                                      ScreenCap.ScreenCap.yPos1,
-                                   ScreenCap.ScreenCap.xPos2, ScreenCap.ScreenCap.yPos2))
+        self.a_v.add_listener(self.setLabel)
+        x = threading.Thread(target=self.a_v.screencap, args=(ScreenCap.ScreenCap.xPos1, ScreenCap.ScreenCap.yPos1,
+                                                              ScreenCap.ScreenCap.xPos2, ScreenCap.ScreenCap.yPos2))
         x.start()
-
-        y = threading.Thread(target=self.setLabel, args=(event))
-        y.start()
 
             # im = pyscreenshot.grab(bbox=(ScreenCap.ScreenCap.xPos1, ScreenCap.ScreenCap.yPos1,
         #                              ScreenCap.ScreenCap.xPos2, ScreenCap.ScreenCap.yPos2))
         # im.show()
-    def setLabel(self, event):
-        while True:
-            event.wait()
-            self.random_number = ""
-            img = asciiView.img_print
-            for i in range(80):
-                self.random_number += img[i]
+    def setLabel(self, imgprint):
+        self.random_number = ""
+        for i in range(80):
+            self.random_number += imgprint[i]
 
 
