@@ -1,7 +1,6 @@
 from PIL import Image, ImageEnhance, ImageGrab
 from numpy import asarray
 
-
 class AsciiView:
     x1, y1, x2, y2 = 0, 0, 0, 0
 
@@ -31,13 +30,10 @@ class AsciiView:
             # imx = ImageGrab.grab(bbox=(118, 154, 1280, 800))
 
             # Prepare image
-            imx = ImageGrab.grab(bbox=(self.x1, self.y1, self.x2, self.y2))
-            im = imx.resize((170, 80))
-            ime = ImageEnhance.Contrast(im)
-            img = ime.enhance(4.0)
+            imx = ImageGrab.grab(bbox=(self.x1, self.y1, self.x2, self.y2)).resize((170, 80))
 
             # Convert image to array
-            data = asarray(img)
+            data = asarray(ImageEnhance.Contrast(imx).enhance(4.0))
 
             # new_data = []
             # for i in data:
@@ -61,8 +57,8 @@ class AsciiView:
             #     for b in range(img.width):
             #         x = int(result[a][b])
             image = [['' for i in range(170)] for j in range(80)]
-            for a in range(img.height):
-                for b in range(img.width):
+            for a in range(imx.height):
+                for b in range(imx.width):
                     x = int(data[a][b][0])
                     # if x <= 3:
                     #     image[a][b] = str(" ")
@@ -124,7 +120,7 @@ class AsciiView:
             #     self.__img_print[x] = line + "\n"
             #     # print(line)
             #     line = ""
-            for x in range(img.height):
+            for x in range(imx.height):
                 self.__img_print[x] = line.join(image[x]) + "\n"
                 line = ""
             self.fire()
