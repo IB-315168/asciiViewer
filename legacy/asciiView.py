@@ -2,7 +2,6 @@ from PIL import Image, ImageEnhance, ImageGrab
 from numpy import asarray
 
 
-# TODO Thread
 class AsciiView:
     x1, y1, x2, y2 = 0, 0, 0, 0
 
