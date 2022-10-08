@@ -20,7 +20,13 @@
                 size_hint: None, None
                 size: root.width * 0.128, root.height * 0.064
                 text: "Capture"
-                on_release: root.screenShot()
+                on_release: root.startCapture()
+            Button:
+                id: button3
+                size_hint: None, None
+                size: root.width * 0.128, root.height * 0.064
+                text: "Stop capture"
+                on_release: root.stopCapture()
         Label:
             id: label1
             spacing: 100

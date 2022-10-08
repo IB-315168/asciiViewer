@@ -1,31 +1,38 @@
-from time import sleep
-
 from PIL import Image, ImageEnhance, ImageGrab
-import numpy
 from numpy import asarray
-from threading import Event
-
 
 
 # TODO Thread
 class AsciiView:
+    x1, y1, x2, y2 = 0, 0, 0, 0
+
     def __init__(self):
+        self.__run = True
         self.__listeners = []
         self.__img_print = [""] * 80
 
     def add_listener(self, listener):
         self.__listeners.append(listener)
 
+    def remove_listener(self, listener):
+        self.__listeners.remove(listener)
+
     def fire(self):
         for listener in self.__listeners:
             listener(self.__img_print)
 
-    def screencap(self, x1, y1, x2, y2):
-        while True:
+    def setBBox(self, pos):
+        self.x1 = pos[0]
+        self.y1 = pos[1]
+        self.x2 = pos[2]
+        self.y2 = pos[3]
+
+    def screencap(self):
+        while self.__run:
             # imx = ImageGrab.grab(bbox=(118, 154, 1280, 800))
 
             # Prepare image
-            imx = ImageGrab.grab(bbox=(x1, y1, x2, y2))
+            imx = ImageGrab.grab(bbox=(self.x1, self.y1, self.x2, self.y2))
             im = imx.resize((170, 80))
             ime = ImageEnhance.Contrast(im)
             img = ime.enhance(4.0)
@@ -123,3 +130,6 @@ class AsciiView:
                 line = ""
             self.fire()
             # sleep(0.2)
+
+    def kill(self):
+        self.__run = False

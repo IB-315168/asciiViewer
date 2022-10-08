@@ -12,32 +12,30 @@ class TextWidget(Widget):
     random_number = StringProperty()
     a_v = asciiView.AsciiView()
     screen_scan = False
+    captureThread: threading.Thread
 
     def __init__(self, **kwargs):
         super(TextWidget, self).__init__(**kwargs)
         self.__listeners = []
-
         self.random_number = "0000000000000000000000000000000000000000000000000000" \
                              + "0000000000000000000000000000000000000000000000000000000000000000000000 "
 
     def change_text(self):
         listener = mouse.Listener(
-            on_move=ScreenCap.on_move,
-            on_click=ScreenCap.on_click,
-            on_scroll=ScreenCap.on_scroll)
+            on_click=ScreenCap.on_click)
         listener.start()
         ScreenCap.ScreenCap.complete = False
 
         while not ScreenCap.ScreenCap.complete:
-            self.random_number = "<{x1},{y1},{x2},{y2}>".format(x1=ScreenCap.ScreenCap.xPos1, y1=ScreenCap.ScreenCap.yPos1,
-                                                                x2=ScreenCap.ScreenCap.xPos2, y2=ScreenCap.ScreenCap.yPos2)
+            self.random_number = "<{x1},{y1},{x2},{y2}>".format(x1=ScreenCap.ScreenCap.pos[0], y1=ScreenCap.ScreenCap.pos[1],
+                                                                x2=ScreenCap.ScreenCap.pos[2], y2=ScreenCap.ScreenCap.pos[3])
+        self.a_v.setBBox(ScreenCap.ScreenCap.pos)
         listener.stop()
 
-    def screenShot(self):
+    def startCapture(self):
         self.a_v.add_listener(self.setLabel)
-        x = threading.Thread(target=self.a_v.screencap, args=(ScreenCap.ScreenCap.xPos1, ScreenCap.ScreenCap.yPos1,
-                                                              ScreenCap.ScreenCap.xPos2, ScreenCap.ScreenCap.yPos2))
-        x.start()
+        self.captureThread = threading.Thread(target=self.a_v.screencap)
+        self.captureThread.start()
 
             # im = pyscreenshot.grab(bbox=(ScreenCap.ScreenCap.xPos1, ScreenCap.ScreenCap.yPos1,
         #                              ScreenCap.ScreenCap.xPos2, ScreenCap.ScreenCap.yPos2))
@@ -46,5 +44,11 @@ class TextWidget(Widget):
         self.random_number = ""
         for i in range(80):
             self.random_number += imgprint[i]
+
+    def stopCapture(self):
+        if self.captureThread.is_alive():
+            self.a_v.kill()
+            self.a_v.remove_listener(self.setLabel)
+
 
 
