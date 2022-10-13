@@ -5,7 +5,7 @@ class AsciiView:
     x1, y1, x2, y2 = 0, 0, 0, 0
 
     def __init__(self):
-        self.__run = True
+        self.__run = False
         self.__listeners = []
         self.__img_print = [""] * 80
 
@@ -26,6 +26,7 @@ class AsciiView:
         self.y2 = pos[3]
 
     def screencap(self):
+        self.__run = True
         while self.__run:
             # imx = ImageGrab.grab(bbox=(118, 154, 1280, 800))
 
